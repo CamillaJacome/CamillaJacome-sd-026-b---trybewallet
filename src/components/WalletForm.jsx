@@ -1,15 +1,15 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { fetchCurrencies, addExpensives } from '../redux/actions';
+import { fetchCurrencies, addExpenses } from '../redux/actions';
 
 class WalletForm extends Component {
   state = {
     value: '',
-    description: '',
     currency: 'USD',
     method: 'Dinheiro',
     tag: 'Alimentação',
+    description: '',
   };
 
   async componentDidMount() {
@@ -29,13 +29,13 @@ class WalletForm extends Component {
     const response = await fetch(url);
     const data = await response.json();
     console.log(data);
-    dispatch(addExpensives({ ...this.state, id: expenses.length, exchangeRates: data }));
+    dispatch(addExpenses({ ...this.state, id: expenses.length, exchangeRates: data }));
     this.setState({
       value: '',
-      description: '',
       currency: 'USD',
       method: 'Dinheiro',
       tag: 'Alimentação',
+      description: '',
     });
   };
 
@@ -90,7 +90,7 @@ class WalletForm extends Component {
             onChange={ this.onInputChange }
           >
             <option value="Alimentação">Alimentação</option>
-            <option value="Lazer'">Lazer</option>
+            <option value="Lazer">Lazer</option>
             <option value="Trabalho">Trabalho</option>
             <option value="Transporte">Transporte</option>
             <option value="Saúde">Saúde</option>

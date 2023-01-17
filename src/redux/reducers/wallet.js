@@ -1,4 +1,4 @@
-import { REQUEST_SUCCESSFUL, EXPENSIVES_VALUE } from '../actions';
+import { REQUEST_SUCCESSFUL, EXPENSES_VALUE } from '../actions';
 
 const INITIAL_STATE = {
   currencies: [],
@@ -14,8 +14,8 @@ const walletReducer = (state = INITIAL_STATE, action) => {
       ...state,
       currencies: action.payload,
     };
-  case EXPENSIVES_VALUE:
-    console.log(action.payload);
+  case EXPENSES_VALUE:
+    // console.log(action.payload);
     return {
       ...state,
       expenses: [...state.expenses, action.payload],
