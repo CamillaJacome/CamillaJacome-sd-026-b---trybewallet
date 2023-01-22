@@ -288,5 +288,54 @@ describe('Testa os compomentes do Header.js', () => {
       userEvent.click(deleteButton[0]);
       expect(totalElement).toHaveTextContent('85.56');
     });
+
+    test('se o botão de editação funciona', async () => {
+      const initialEntries = ['/carteira'];
+      const initialState = {
+        wallet: {
+          currencies: Object.keys(mockData),
+          expenses: [
+            {
+              value: '10',
+              description: 'Almoço',
+              currency: 'USD',
+              method: 'Dinheiro',
+              tag: 'Lazer',
+              id: 0,
+              exchangeRates: mockData,
+            },
+            {
+              value: '18',
+              description: 'Jantar',
+              currency: 'USD',
+              method: 'Dinheiro',
+              tag: 'Lazer',
+              id: 1,
+              exchangeRates: mockData,
+            },
+          ],
+          editor: false,
+          idToEdit: 0,
+        },
+      };
+      renderWithRouterAndRedux(<App />, { initialEntries, initialState });
+
+      const fieldElement = screen.getByTestId(totalField);
+      const valueElement = screen.getByTestId(valueInput);
+      const descriptionElement = screen.getByTestId(descriptionInput);
+      const addButton = screen.getByRole('button', {
+        name: /adicionar despesa/i,
+      });
+      const editButtonEl = screen.getAllByRole('button', { name: /editar/i });
+
+      expect(fieldElement).toHaveTextContent('133.09');
+      userEvent.click(editButtonEl[0]);
+      expect(addButton).toHaveTextContent(/Editar despesa/i);
+      userEvent.type(valueElement, '15');
+      userEvent.type(descriptionElement, 'Valor do almoço alterado');
+      userEvent.click(addButton);
+      expect(fieldElement).toHaveTextContent('156.85');
+      expect(addButton).toHaveTextContent(/Adicionar despesa/i);
+    });
   });
 });

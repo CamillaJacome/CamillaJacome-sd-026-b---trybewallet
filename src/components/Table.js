@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { RemoveExpenses } from '../redux/actions';
+import { RemoveExpenses, setEditorTrue } from '../redux/actions';
 
 class Table extends Component {
   render() {
@@ -47,6 +47,7 @@ class Table extends Component {
                   Excluir
                 </button>
                 <button
+                  onClick={ () => dispatch(setEditorTrue(expense.id)) }
                   type="submit"
                   data-testid="edit-btn"
                 >

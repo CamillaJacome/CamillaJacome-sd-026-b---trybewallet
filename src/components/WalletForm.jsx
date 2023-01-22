@@ -1,14 +1,18 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { fetchCurrencies, addExpenses } from '../redux/actions';
+import { fetchCurrencies, addExpenses, editExpense } from '../redux/actions';
+
+const INITIAL_CURRENCY = 'USD';
+const INITIAL_METHOD = 'Dinheiro';
+const INITIAL_TAG = 'Alimentação';
 
 class WalletForm extends Component {
   state = {
     value: '',
-    currency: 'USD',
-    method: 'Dinheiro',
-    tag: 'Alimentação',
+    currency: INITIAL_CURRENCY,
+    method: INITIAL_METHOD,
+    tag: INITIAL_TAG,
     description: '',
   };
 
@@ -32,9 +36,9 @@ class WalletForm extends Component {
       dispatch(addExpenses({ ...this.state, id: expenses.length, exchangeRates: data }));
       this.setState({
         value: '',
-        currency: 'USD',
-        method: 'Dinheiro',
-        tag: 'Alimentação',
+        currency: INITIAL_CURRENCY,
+        method: INITIAL_METHOD,
+        tag: INITIAL_TAG,
         description: '',
       });
     } catch (error) {
@@ -42,8 +46,29 @@ class WalletForm extends Component {
     }
   };
 
+  editTable = () => {
+    const { dispatch, expenses, id } = this.props;
+    expenses.forEach((expense) => {
+      if (expense.id === id) {
+        expenses[expense.id] = {
+          ...this.state,
+          id: expense.id,
+          exchangeRates: expense.exchangeRates,
+        };
+      }
+    });
+    dispatch(editExpense(expenses));
+    this.setState({
+      value: '',
+      description: '',
+      currency: INITIAL_CURRENCY,
+      method: INITIAL_METHOD,
+      tag: INITIAL_TAG,
+    });
+  };
+
   render() {
-    const { currencies } = this.props;
+    const { currencies, editor } = this.props;
     const { value, description, currency, method, tag } = this.state;
     return (
       <div>
@@ -100,9 +125,11 @@ class WalletForm extends Component {
           </select>
           <button
             type="button"
-            onClick={ this.fechQuote }
+            // onClick={ this.fechQuote }
+            disabled={ !value || !description || !currency || !method || !tag }
+            onClick={ editor ? this.editTable : this.fechQuote }
           >
-            Adicionar despesa
+            {editor ? 'Editar despesa' : 'Adicionar despesa'}
           </button>
         </form>
       </div>
@@ -113,12 +140,16 @@ class WalletForm extends Component {
 const mapStateToProps = (state) => ({
   currencies: state.wallet.currencies,
   expenses: state.wallet.expenses,
+  editor: state.wallet.editor,
+  id: state.wallet.idToEdit,
 });
 
 WalletForm.propTypes = {
   dispatch: PropTypes.func.isRequired,
   currencies: PropTypes.arrayOf(PropTypes.string).isRequired,
   expenses: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+  editor: PropTypes.bool.isRequired,
+  id: PropTypes.number.isRequired,
 };
 
 export default connect(mapStateToProps)(WalletForm);
