@@ -60,6 +60,19 @@ describe('Testa a página de Login', () => {
     userEvent.click(buttonElement);
     expect(history.location.pathname).toEqual('/carteira');
   });
+  test('se as informações do usuário são salvas no store', () => {
+    const { store } = renderWithRouterAndRedux(<App />);
+    const emailElement = screen.getByTestId(emailInput);
+    const passwordElement = screen.getByTestId(passwordInput);
+    const buttonElement = screen.getByRole('button', { name: /entrar/i });
+
+    // entrando com login e senha
+    userEvent.type(emailElement, validEmail);
+    userEvent.type(passwordElement, '123456');
+    userEvent.click(buttonElement);
+    // verificando se os dados são salvos no store
+    expect(store.getState().user.email).toBe(validEmail);
+  });
 });
 // 1 acessar
 

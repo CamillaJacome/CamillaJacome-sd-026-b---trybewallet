@@ -22,16 +22,16 @@ export const fetchCurrencies = () => async (dispatch) => {
     const response = await fetch(url);
     const data = await response.json();
     const currencies = Object.keys(data).filter((currencie) => currencie !== 'USDT');
-    // console.log(currencies);
     dispatch(requestSuccessful(currencies));
   } catch (error) {
-    console.error(error);
+    // console.error(error);
   }
 };
 export const addExpenses = (values) => ({
   type: EXPENSES_VALUE,
   payload: { ...values },
 });
+
 export const RemoveExpenses = (expenses) => ({
   type: REMOVE_EXPENSES_VALUE,
   payload: expenses,

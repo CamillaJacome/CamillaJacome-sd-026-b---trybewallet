@@ -24,19 +24,22 @@ class WalletForm extends Component {
 
   fechQuote = async () => {
     // console.log('cliquei');
-    const { expenses, dispatch } = this.props;
-    const url = 'https://economia.awesomeapi.com.br/json/all';
-    const response = await fetch(url);
-    const data = await response.json();
-    console.log(data);
-    dispatch(addExpenses({ ...this.state, id: expenses.length, exchangeRates: data }));
-    this.setState({
-      value: '',
-      currency: 'USD',
-      method: 'Dinheiro',
-      tag: 'Alimentação',
-      description: '',
-    });
+    try {
+      const { expenses, dispatch } = this.props;
+      const url = 'https://economia.awesomeapi.com.br/json/all';
+      const response = await fetch(url);
+      const data = await response.json();
+      dispatch(addExpenses({ ...this.state, id: expenses.length, exchangeRates: data }));
+      this.setState({
+        value: '',
+        currency: 'USD',
+        method: 'Dinheiro',
+        tag: 'Alimentação',
+        description: '',
+      });
+    } catch (error) {
+      // console.error(error);
+    }
   };
 
   render() {

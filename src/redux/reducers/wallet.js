@@ -15,7 +15,6 @@ const walletReducer = (state = INITIAL_STATE, action) => {
       currencies: action.payload,
     };
   case EXPENSES_VALUE:
-    // console.log(action.payload);
     return {
       ...state,
       expenses: [...state.expenses, action.payload],

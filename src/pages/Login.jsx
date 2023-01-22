@@ -87,12 +87,9 @@ class Login extends React.Component {
   };
 }; */
 
-const mapStateToProps = (state) => {
-  console.log(state.user);
-  return {
-    email: state.user.email,
-  };
-};
+const mapStateToProps = (state) => ({
+  email: state.user.email,
+});
 
 Login.propTypes = {
   dispatch: PropTypes.isRequired,

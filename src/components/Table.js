@@ -46,6 +46,12 @@ class Table extends Component {
                 >
                   Excluir
                 </button>
+                <button
+                  type="submit"
+                  data-testid="edit-btn"
+                >
+                  Editar despesa
+                </button>
               </td>
             </tr>
           ))}
